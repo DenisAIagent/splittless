@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Splittless - L'appli qui conserve les amitiés</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo img {
+            height: 40px;
+            width: auto;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2D1B69;
+        }
+
+        .nav-cta {
+            background: linear-gradient(135deg, #00D4FF, #E91E63);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 212, 255, 0.3);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, #00D4FF 0%, #2D1B69 50%, #E91E63 100%);
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+
+        .tagline {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            margin-bottom: 1.5rem;
+            opacity: 0.9;
+            font-style: italic;
+        }
+
+        .hero-description {
+            font-size: 1.25rem;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-primary {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .cta-primary:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(0, 212, 255, 0.3);
+        }
+
+        .cta-secondary {
+            background: transparent;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .cta-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Problem Section */
+        .problem {
+            padding: 6rem 0;
+            background: #f8fafc;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: #2D1B69;
+        }
+
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .problem-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .problem-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border: 2px solid rgba(0, 212, 255, 0.3);
+        }
+
+        .problem-emoji {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .problem-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #dc2626;
+        }
+
+        /* Solution Section */
+        .solution {
+            padding: 6rem 0;
+            background: white;
+        }
+
+        .solution-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        .step {
+            text-align: center;
+            position: relative;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 auto 1.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .step h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #1e293b;
+        }
+
+        .step p {
+            color: #64748b;
+            font-size: 1.1rem;
+        }
+
+        /* Demo Section */
+        .demo {
+            padding: 6rem 0;
+            background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .demo-container {
+            max-width: 400px;
+            margin: 3rem auto;
+            background: #1a1a1a;
+            border-radius: 30px;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .phone-mockup {
+            background: white;
+            border-radius: 25px;
+            padding: 2rem 1rem;
+            color: #1a1a1a;
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .app-header {
+            text-align: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .split-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            background: #f1f5f9;
+            border-radius: 10px;
+            margin: 0.5rem 0;
+        }
+
+        .payment-button {
+            background: linear-gradient(135deg, #00D4FF, #E91E63);
+            color: white;
+            padding: 1rem;
+            border-radius: 15px;
+            text-align: center;
+            font-weight: 600;
+            margin-top: auto;
+        }
+
+        /* Pricing Section */
+        .pricing {
+            padding: 6rem 0;
+            background: #f8fafc;
+        }
+
+        .pricing-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .pricing-card {
+            background: white;
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .pricing-card.featured {
+            background: linear-gradient(135deg, #00D4FF, #2D1B69, #E91E63);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .pricing-card.featured:hover {
+            transform: translateY(-5px) scale(1.07);
+        }
+
+        .price {
+            font-size: 3rem;
+            font-weight: 700;
+            margin: 1rem 0;
+        }
+
+        .price-period {
+            font-size: 1rem;
+            opacity: 0.7;
+        }
+
+        .features {
+            list-style: none;
+            margin: 2rem 0;
+        }
+
+        .features li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .pricing-cta {
+            background: #00D4FF;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .pricing-card.featured .pricing-cta {
+            background: white;
+            color: #2D1B69;
+        }
+
+        .pricing-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 212, 255, 0.3);
+        }
+
+        /* CTA Section */
+        .final-cta {
+            padding: 6rem 0;
+            background: linear-gradient(135deg, #2D1B69, #1a1a2e);
+            color: white;
+            text-align: center;
+        }
+
+        .viral-tagline {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-weight: 700;
+            margin-bottom: 2rem;
+            font-style: italic;
+            background: linear-gradient(135deg, #00D4FF, #E91E63);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Footer */
+        .footer {
+            background: #0f172a;
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav {
+                padding: 0 1rem;
+            }
+
+            .logo img {
+                height: 35px;
+            }
+
+            .logo-text {
+                font-size: 1.3rem;
+            }
+
+            .hero-content {
+                padding: 0 1rem;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+
+            .cta-group {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .pricing-card.featured {
+                transform: none;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-on-scroll {
+            animation: fadeInUp 0.6s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">
+                <img src="public/logo.png" alt="Splittless Logo">
+            </div>
+            <a href="#download" class="nav-cta">Télécharger l'app</a>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Fini les galères d'addition au resto ! 🍕</h1>
+            <p class="tagline">"Je splitt, tu splitt, il splitt, nous splittons"</p>
+            <p class="hero-description">
+                L'appli qui conserve les amitiés. Split tes additions en 30 secondes avec des cartes virtuelles collectives.
+            </p>
+            <div class="cta-group">
+                <a href="#download" class="cta-primary">
+                    📱 Télécharger maintenant
+                </a>
+                <a href="#demo" class="cta-secondary">
+                    Voir la démo
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Section -->
+    <section class="problem">
+        <div class="container">
+            <h2 class="section-title">Tu en as marre de ces situations ? 😤</h2>
+            <div class="problem-grid">
+                <div class="problem-card">
+                    <div class="problem-emoji">🧮</div>
+                    <h3>10 minutes de calculs</h3>
+                    <p>"Alors moi j'ai pris la pizza... toi la salade... et les taxes... et le pourboire..."</p>
+                </div>
+                <div class="problem-card">
+                    <div class="problem-emoji">💸</div>
+                    <h3>Quelqu'un avance tout</h3>
+                    <p>"Bon je paie et vous me remboursez plus tard" - Et on connaît la suite...</p>
+                </div>
+                <div class="problem-card">
+                    <div class="problem-emoji">😬</div>
+                    <h3>Dettes oubliées</h3>
+                    <p>"Tu me dois 15€ de jeudi dernier" - Les relations qui se tendent</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solution Section -->
+    <section class="solution">
+        <div class="container">
+            <h2 class="section-title">Splittless : La solution en 3 étapes ✨</h2>
+            <div class="solution-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>📸 Tu prends une photo</h3>
+                    <p>L'addition → hop, photo. L'IA reconnaît tout automatiquement : plats, prix, taxes.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>📱 Tu partages le lien</h3>
+                    <p>WhatsApp, AirDrop... Tes potes cliquent, cochent leurs plats, paient leur part.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>💳 Tu paies avec Apple Pay</h3>
+                    <p>Une carte virtuelle collective se génère. Tu paies au resto comme d'habitude.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Section -->
+    <section class="demo" id="demo">
+        <div class="container">
+            <h2 class="section-title">Regarde comme c'est simple ! 📱</h2>
+            <div class="demo-container">
+                <div class="phone-mockup">
+                    <div class="app-header">
+                        <strong>Split - Le Comptoir du Coin</strong><br>
+                        <small>44.16€ • 3 personnes</small>
+                    </div>
+                    
+                    <div class="split-item">
+                        <span>🍕 Pizza Margherita</span>
+                        <span><strong>12.00€</strong></span>
+                    </div>
+                    
+                    <div class="split-item">
+                        <span>🥗 Salade César</span>
+                        <span><strong>9.50€</strong></span>
+                    </div>
+                    
+                    <div class="split-item">
+                        <span>🍺 Bière pression</span>
+                        <span><strong>4.00€</strong></span>
+                    </div>
+                    
+                    <div class="split-item">
+                        <span>🍰 Tiramisu</span>
+                        <span><strong>6.50€</strong></span>
+                    </div>
+                    
+                    <div style="margin: 1rem 0; padding: 1rem; background: #e2e8f0; border-radius: 10px;">
+                        <strong>Ta part: 17.60€</strong><br>
+                        <small>Pizza + Bière + pourboire + taxes</small>
+                    </div>
+                    
+                    <div class="payment-button">
+                        💳 Payer avec Apple Pay
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing">
+        <div class="container">
+            <h2 class="section-title">Le prix d'un café pour des sorties illimitées ☕</h2>
+            <div class="pricing-cards">
+                <div class="pricing-card">
+                    <h3>Gratuit</h3>
+                    <div class="price">0€</div>
+                    <ul class="features">
+                        <li>✅ 3 splits par mois</li>
+                        <li>✅ Toutes les fonctionnalités</li>
+                        <li>✅ Support par email</li>
+                        <li>✅ Parfait pour tester</li>
+                    </ul>
+                    <a href="#download" class="pricing-cta">Commencer gratuitement</a>
+                </div>
+                
+                <div class="pricing-card featured">
+                    <h3>Premium</h3>
+                    <div class="price">2.99€<span class="price-period">/mois</span></div>
+                    <ul class="features">
+                        <li>✅ Splits illimités</li>
+                        <li>✅ Historique complet</li>
+                        <li>✅ Support prioritaire</li>
+                        <li>✅ Nouvelles fonctionnalités en avant-première</li>
+                    </ul>
+                    <a href="#download" class="pricing-cta">Devenir Premium</a>
+                </div>
+            </div>
+            <p style="text-align: center; margin-top: 2rem; color: #64748b;">
+                <strong>Tu économises 50€+ par mois</strong> en dettes oubliées pour 2.99€. Le calcul est vite fait ! 🧮
+            </p>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="final-cta" id="download">
+        <div class="container">
+            <div class="viral-tagline">"Je splitt, tu splitt, il splitt, nous splittons"</div>
+            <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">Tes prochaines sorties resto sans galère</h2>
+            <p style="font-size: 1.3rem; margin-bottom: 3rem; opacity: 0.9;">
+                Rejoins les milliers d'utilisateurs qui ont déjà dit adieu aux galères d'addition
+            </p>
+            <div class="cta-group">
+                <a href="#" class="cta-primary" style="font-size: 1.2rem; padding: 1.2rem 2.5rem;">
+                    📱 Télécharger sur l'App Store
+                </a>
+                <a href="#" class="cta-primary" style="font-size: 1.2rem; padding: 1.2rem 2.5rem;">
+                    📱 Télécharger sur Google Play
+                </a>
+            </div>
+            <p style="margin-top: 2rem; opacity: 0.7;">
+                Disponible sur iOS et Android • 100% gratuit pour commencer
+            </p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div>
+                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; justify-content: center;">
+                    <img src="public/logo.png" alt="Splittless Logo" style="height: 30px;">
+                    <h4>Splittless</h4>
+                </div>
+                <p>L'appli qui conserve les amitiés</p>
+                <p style="margin-top: 1rem;">© 2025 Splittless. Tous droits réservés.</p>
+            </div>
+            <div>
+                <h4 style="margin-bottom: 1rem;">Liens utiles</h4>
+                <p><a href="#" style="color: #94a3b8; text-decoration: none;">Support</a></p>
+                <p><a href="#" style="color: #94a3b8; text-decoration: none;">CGU</a></p>
+                <p><a href="#" style="color: #94a3b8; text-decoration: none;">Confidentialité</a></p>
+            </div>
+            <div>
+                <h4 style="margin-bottom: 1rem;">Contact</h4>
+                <p>hello@splittless.com</p>
+                <p>Suivez-nous sur les réseaux</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-on-scroll');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.problem-card, .step, .pricing-card').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
